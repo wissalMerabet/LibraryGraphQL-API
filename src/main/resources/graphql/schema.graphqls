@@ -1,0 +1,55 @@
+type Author {
+    id: ID!
+    name: String!
+    age: Int
+    nationality: String
+    books: [Book]
+}
+
+type Book {
+    id: ID!
+    title: String!
+    publicationYear: Int
+    language: String
+    nbPages: Int
+    category: Category
+    author: Author
+}
+
+type Category {
+    idC: ID!
+    categoryName: String!
+    parentCategory: Category
+    books: [Book]
+}
+
+type ListWrapper {
+    list: [Book]
+    hasMore: Boolean
+}
+
+enum SearchType {
+  BOOK
+  CATEGORY
+  AUTHOR
+  ALL
+}
+
+
+union SearchResult = Author | Book | Category
+
+
+type Query {
+    authors: [Author]
+    books: [Book]
+    categories: [Category]
+    
+    author(id:ID!) : Author
+    book(id:ID!) : Book
+    category(id:ID!) : Category
+    
+    listBooks( language: String ,publicationYear: Int ,categoryId: Int ,recursive: Boolean , offset: Int, limit: Int): ListWrapper
+    listBooksByAuthor(authorId: Int!, offset: Int, limit: Int): ListWrapper
+    search(keyword: String = "", type: SearchType, offset: Int, limit: Int): [SearchResult]
+
+}
