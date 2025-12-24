@@ -2,15 +2,23 @@ package rs.spai.LabFinalQl.controller;
 
 import java.util.ArrayList;
 
+
 import java.util.List;
 
 
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
+import rs.spai.LabFinalQl.dto.InputBook;
+import rs.spai.LabFinalQl.model.Author;
 import rs.spai.LabFinalQl.model.Book;
+import rs.spai.LabFinalQl.model.Category;
+import rs.spai.LabFinalQl.repository.AuthorRepository;
 import rs.spai.LabFinalQl.repository.BookRepository;
+import rs.spai.LabFinalQl.repository.CategoryRepository;
 import rs.spai.LabFinalQl.service.DataLoaderService;
 
 
@@ -19,12 +27,19 @@ import rs.spai.LabFinalQl.service.DataLoaderService;
 
 public class BookController {
 
-	private BookRepository bokRepo;
+	private  AuthorRepository autRepo;
+    private  BookRepository bokRepo;
+    private  CategoryRepository catRepo;
 	private DataLoaderService categoryTree;
 
-	public BookController(BookRepository bokRepo, DataLoaderService categoryTree) {
+	
+
+	public BookController(AuthorRepository autRepo, BookRepository bokRepo, CategoryRepository catRepo,
+			DataLoaderService categoryTree) {
 		super();
+		this.autRepo = autRepo;
 		this.bokRepo = bokRepo;
+		this.catRepo = catRepo;
 		this.categoryTree = categoryTree;
 	}
 
@@ -101,6 +116,28 @@ public class BookController {
 	}
 
 
+
+	@PreAuthorize("hasRole('ADMIN')")
+	@MutationMapping
+	public Book addBook(@Argument InputBook book) {
+
+	    Author author = autRepo.findById(book.getIdAuthor())
+	            .orElseThrow(() -> new RuntimeException("Author not found"));
+
+	    Category category = catRepo.findById(book.getIdCategory())
+	            .orElseThrow(() -> new RuntimeException("Category not found"));
+
+	    Book newBook = Book.builder()
+	            .title(book.getTitle())
+	            .publicationYear(book.getPublicationYear())
+	            .language(book.getLanguage())
+	            .nbPages(book.getNbPages())
+	            .author(author)
+	            .category(category)
+	            .build();
+
+	    return bokRepo.save(newBook);
+	}
 
 	
 

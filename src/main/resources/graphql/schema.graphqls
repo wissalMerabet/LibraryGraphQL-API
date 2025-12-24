@@ -23,6 +23,15 @@ type Category {
     books: [Book]
 }
 
+input BookInput {
+    title: String!
+    publicationYear: Int!
+    language: String!
+    nbPages: Int!
+    idCategory: Int!
+    idAuthor: Int!
+}
+
 type ListWrapper {
     list: [Book]
     hasMore: Boolean
@@ -53,3 +62,12 @@ type Query {
     search(keyword: String = "", type: SearchType, offset: Int, limit: Int): [SearchResult]
 
 }
+
+
+
+type Mutation {
+    addBook(book: BookInput!): Book
+}
+
+
+
