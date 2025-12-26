@@ -71,7 +71,7 @@ public class BookController {
 	                    : List.of(categoryId))
 	            : List.of();
 
-	    // FIX: Collect into a mutable list
+	    
 	    List<Book> books = bokRepo.findAll().stream()
 	            .filter(b -> publicationYear == null || b.getPublicationYear().equals(publicationYear))
 	            .filter(b -> language == null || b.getLanguage().equalsIgnoreCase(language))
@@ -79,12 +79,11 @@ public class BookController {
 	                    (b.getCategory() != null && categories.contains(b.getCategory().getIdC())))
 	            .skip(safeOffset)
 	            .limit(safeLimit + 1)
-	            .collect(java.util.stream.Collectors.toList()); // <-- FIXED
-
+	            .collect(java.util.stream.Collectors.toList()); 
 	    boolean hasMore = books.size() > safeLimit;
 
 	    if (hasMore) {
-	        books.remove(books.size() - 1); // safe now
+	        books.remove(books.size() - 1); 
 	    }
 
 	    return new ListWrapper(books, hasMore);
@@ -117,6 +116,8 @@ public class BookController {
 
 
 
+	//add book :
+	
 	@PreAuthorize("hasRole('ADMIN')")
 	@MutationMapping
 	public Book addBook(@Argument InputBook book) {
