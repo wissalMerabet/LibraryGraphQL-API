@@ -2,7 +2,7 @@ package rs.spai.LabFinalQl.model;
 
 import java.util.List;
 
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,7 +26,7 @@ public class Author {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 	
 	@Column(nullable = false)
 	private String name;
@@ -34,7 +34,8 @@ public class Author {
 	private Integer age;
 	private String nationality;
 	
-	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "author", cascade = CascadeType.ALL,
+		    orphanRemoval = true ,fetch = FetchType.LAZY)
 	private List<Book> books;
 
 }

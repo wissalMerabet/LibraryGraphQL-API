@@ -99,7 +99,7 @@ public class BookController {
 	    int safeLimit = (limit != null && limit > 0) ? limit : 10;
 
 	    List<Book> books = bokRepo.findAll().stream()
-	            .filter(b -> authorId == null || b.getAuthor().getId().equals(Long.valueOf(authorId)))
+	            .filter(b -> authorId == null || b.getAuthor().getId() == authorId)
 	            .skip(safeOffset)
 	            .limit(safeLimit + 1) 
 	            .toList();
