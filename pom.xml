@@ -11,7 +11,7 @@
 	<groupId>rs.spai</groupId>
 	<artifactId>LabFinalQl</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>LabFinalQl</name>
 	<description>Demo project -- GraphQL</description>
 	<url/>
