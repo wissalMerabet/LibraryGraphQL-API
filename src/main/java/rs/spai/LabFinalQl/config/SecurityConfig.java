@@ -28,9 +28,12 @@ public class SecurityConfig {
         http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-            		.requestMatchers("/playground").permitAll()
-                    .requestMatchers("/api/graphql").permitAll()
-            )
+            	    .requestMatchers("/", "/index.html", "/style.css").permitAll()
+            	    .requestMatchers("/playground").permitAll()
+            	    .requestMatchers("/api/graphql").permitAll()
+            	    .anyRequest().authenticated()
+            	)
+
             .httpBasic(Customizer.withDefaults());
 
         return http.build();
